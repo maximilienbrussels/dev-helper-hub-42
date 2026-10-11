@@ -1,3 +1,4 @@
+import { deepTx } from "@/lib/i18n-extra";
 import { useState } from "react";
 import { Send, Loader2 } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
@@ -29,8 +30,8 @@ export function PageContactForm({
   title: string;
   intro?: string;
 }) {
-  const { t, lang } = useT();
-  const c = COPY[lang];
+  const { t, lang, tx } = useT();
+  const c = deepTx(tx, COPY[lang]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
@@ -69,8 +70,8 @@ export function PageContactForm({
 
   return (
     <section className="mt-16 rounded-3xl border border-border bg-card p-6 shadow-sm md:mt-20 md:p-10">
-      <h2 className="font-serif text-2xl text-[color:var(--ink-forest)]">{title}</h2>
-      {intro && <p className="mt-2 text-sm text-foreground/90">{intro}</p>}
+      <h2 className="font-serif text-2xl text-[color:var(--ink-forest)]">{tx(title)}</h2>
+      {intro && <p className="mt-2 text-sm text-foreground/90">{tx(intro)}</p>}
       <form onSubmit={submit} className="mt-6 grid gap-5">
         <div className="grid gap-5 sm:grid-cols-2">
           <label className="block min-w-0">

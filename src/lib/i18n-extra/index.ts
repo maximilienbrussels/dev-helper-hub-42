@@ -5,6 +5,9 @@
  * Voorvertonen kan altijd met ?taal=<code> op een /en/-pagina.
  */
 import de from "./de";
+import dePublic from "./de-public";
+import deResources from "./de-resources";
+import deCamps from "./de-camps";
 
 export type ExtraLang = "de" | "ar" | "tr" | "es" | "it" | "pt" | "pl" | "ro" | "zgh";
 
@@ -51,7 +54,7 @@ import dePhrases from "./de-phrases";
  * vertaald op basis van hun Engelse tekst. Ontbreekt een vertaling, dan blijft
  * het Engels staan.
  */
-export const EXTRA_PHRASES: Partial<Record<ExtraLang, Record<string, string>>> = { de: dePhrases };
+export const EXTRA_PHRASES: Partial<Record<ExtraLang, Record<string, string>>> = { de: { ...dePhrases, ...dePublic, ...deResources, ...deCamps } };
 
 export function translatePhrase(extra: ExtraLang | null | undefined, en: string): string {
   if (!extra) return en;

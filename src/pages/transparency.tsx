@@ -1,3 +1,4 @@
+import { deepTx } from "@/lib/i18n-extra";
 import { PagePhotoBand } from "@/components/PagePhotoBand";
 import { NavHeader } from "@/components/NavHeader";
 import { PageContactForm } from "@/components/PageContactForm";
@@ -45,8 +46,8 @@ function MoneyTable({
 }
 
 export function TransparencyPage() {
-  const { lang } = useT();
-  const c = TRANSPARENCY_COPY[lang];
+  const { lang, tx } = useT();
+  const c = deepTx(tx, TRANSPARENCY_COPY[lang]);
   const headers = { project: c.project, funder: c.funder, amount: c.amount };
 
   return (

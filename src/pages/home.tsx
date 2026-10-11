@@ -1,3 +1,4 @@
+import { deepTx } from "@/lib/i18n-extra";
 import { Link } from "@tanstack/react-router";
 import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
@@ -48,8 +49,8 @@ export function Index() {
 /* ---------- HERO: EDITORIAL SPLIT ---------- */
 
 function Hero({ hours }: { hours: Awaited<ReturnType<typeof getHours>> }) {
-  const { t, lang } = useT();
-  const c = COPY[lang];
+  const { t, lang, tx } = useT();
+  const c = deepTx(tx, COPY[lang]);
   // De hero-foto is bewust vast en lokaal: geen mediabibliotheek, geen externe opslag.
 
   return (
@@ -125,7 +126,7 @@ function EditorialGrid({
   animals: Awaited<ReturnType<typeof getAnimals>>;
   vision: string;
 }) {
-  const { t, lang } = useT();
+  const { t, lang, tx } = useT();
   const albums = useAlbumPhotos();
   const preview = animals.slice(0, 3);
   return (

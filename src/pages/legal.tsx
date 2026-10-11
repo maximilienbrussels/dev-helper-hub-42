@@ -1,11 +1,12 @@
+import { deepTx } from "@/lib/i18n-extra";
 import { NavHeader } from "@/components/NavHeader";
 import { PageContactForm } from "@/components/PageContactForm";
 import { useT } from "@/lib/i18n";
 import { LEGAL_COPY, LEGAL_ENTITY, LEGAL_SECTIONS } from "@/lib/legal-content";
 
 export function LegalPage() {
-  const { lang } = useT();
-  const c = LEGAL_COPY[lang];
+  const { lang, tx } = useT();
+  const c = deepTx(tx, LEGAL_COPY[lang]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -53,11 +54,11 @@ export function LegalPage() {
         {LEGAL_SECTIONS.map((s) => (
           <section key={s.title.fr} className="mt-10">
             <h2 className="font-serif text-xl text-[color:var(--ink-forest)] md:text-2xl">
-              {s.title[lang]}
+              {tx(s.title[lang])}
             </h2>
             <div className="mt-3 space-y-2 text-sm leading-relaxed text-foreground/90">
               {s.body[lang].map((p) => (
-                <p key={p}>{p}</p>
+                <p key={p}>{tx(p)}</p>
               ))}
             </div>
           </section>

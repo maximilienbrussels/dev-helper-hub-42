@@ -1,6 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
-import { useT, type Lang } from "@/lib/i18n";
+import { useT, formatT, type Lang } from "@/lib/i18n";
+import { deepTx } from "@/lib/i18n-extra";
+import { pathFor } from "@/lib/routes-i18n";
+import { LocalLink } from "@/components/LocalLink";
 
 const THANKS_COPY: Record<
   Lang,
@@ -81,8 +84,8 @@ export const Route = createFileRoute("/webshop/bedankt")({
 
 function ThankYou() {
   const { session_id: sessionId, ref: orderRef } = Route.useSearch();
-  const { lang } = useT();
-  const c = THANKS_COPY[lang] ?? THANKS_COPY.nl;
+  const { lang, extra, tx } = useT();
+  const c = deepTx(tx, THANKS_COPY[lang]);
 
   // Zonder Stripe-sessie is er geen afgeronde betaling: geen bevestiging tonen.
   if (!sessionId) {
@@ -93,13 +96,12 @@ function ThankYou() {
           {c.noPaymentBody}
         </p>
         <div>
-          <Link
-            to="/$lang/$"
-            params={{ lang: "nl", _splat: "hoevewinkel" }}
+          <LocalLink
+            to={pathFor("shop", lang)}
             className="inline-flex rounded-md bg-primary px-5 py-3 text-primary-foreground"
           >
             {c.backToShop}
-          </Link>
+          </LocalLink>
         </div>
       </main>
     );
@@ -112,7 +114,7 @@ function ThankYou() {
       </p>
       <h1 className="text-3xl font-semibold">{c.placedTitle}</h1>
       {orderRef ? (
-        <p className="font-mono text-sm font-semibold">{c.orderRef(orderRef)}</p>
+        <p className="font-mono text-sm font-semibold">{extra ? formatT(tx("Order {r}"), { r: orderRef }) : c.orderRef(orderRef)}</p>
       ) : null}
 
       <p className="text-muted-foreground">
@@ -126,13 +128,12 @@ function ThankYou() {
         .
       </p>
       <div>
-        <Link
-          to="/$lang/$"
-          params={{ lang: "nl", _splat: "hoevewinkel" }}
+        <LocalLink
+          to={pathFor("shop", lang)}
           className="inline-flex rounded-md bg-primary px-5 py-3 text-primary-foreground"
         >
           {c.backToShop}
-        </Link>
+        </LocalLink>
       </div>
     </main>
   );

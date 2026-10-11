@@ -72,7 +72,8 @@ const CODE_PREFIXES: Record<string, string> = {
 
 export function academyCodePrefix(slug: string | undefined | null): string {
   const key = (slug ?? "").trim().toLowerCase();
-  if (CODE_PREFIXES[key]) return CODE_PREFIXES[key]!;
+  const prefix = CODE_PREFIXES[key];
+  if (prefix) return prefix;
   const letters = key.replace(/[^a-z0-9]/gi, "").toUpperCase();
   return letters.slice(0, 3) || "CER";
 }
@@ -184,12 +185,32 @@ const MODULES: ModulesBySlug = {
       { titel: "Kuddegedrag & klimmen", body: "Rangorde, nieuwsgierigheid en veilige verrijking." },
       { titel: "Stal, weide & klauwen", body: "Droge ligplaats, afrastering en klauwverzorging." },
     ],
+    fr: [
+      { titel: "Alimentation & rumination", body: "Fourrage, minéraux et bonne santé du rumen." },
+      { titel: "Comportement du troupeau & escalade", body: "Hiérarchie, curiosité et enrichissement sécurisé." },
+      { titel: "Étable, pâture & onglons", body: "Lieu de repos sec, clôtures et entretien des onglons." },
+    ],
+    en: [
+      { titel: "Feeding & rumination", body: "Roughage, minerals and a healthy rumen." },
+      { titel: "Herd behaviour & climbing", body: "Social rank, curiosity and safe enrichment." },
+      { titel: "Stable, pasture & hooves", body: "Dry resting area, fencing and hoof care." },
+    ],
   },
   ezel: {
     nl: [
       { titel: "Voeding & hoefverzorging", body: "Vezelrijk voer, geen overgewicht en regelmatig bekappen." },
       { titel: "Gedrag & vertrouwen", body: "Ezels bevriezen bij stress: rust, geduld en leiden." },
       { titel: "Huisvesting & weidebeheer", body: "Droge schuilstal, gezelschap en beperkt gras." },
+    ],
+    fr: [
+      { titel: "Alimentation & soins des sabots", body: "Aliments riches en fibres, prévention du surpoids et parage régulier." },
+      { titel: "Comportement & confiance", body: "Les ânes se figent sous le stress : calme, patience et conduite." },
+      { titel: "Hébergement & gestion des pâtures", body: "Abri sec, compagnie et accès limité à l'herbe." },
+    ],
+    en: [
+      { titel: "Feeding & hoof care", body: "Fibre-rich feed, preventing excess weight and regular hoof trimming." },
+      { titel: "Behaviour & trust", body: "Donkeys freeze under stress: calm, patience and leading." },
+      { titel: "Housing & pasture management", body: "Dry shelter, companionship and limited grass." },
     ],
   },
   bij: {
@@ -198,12 +219,32 @@ const MODULES: ModulesBySlug = {
       { titel: "Bestuiving & dracht", body: "Drachtplanten, nectar, stuifmeel en biodiversiteit in de stad." },
       { titel: "Veilig imkeren", body: "Kastinspectie, beschermkledij en zwermpreventie." },
     ],
+    fr: [
+      { titel: "La colonie d'abeilles", body: "Reine, ouvrières, faux-bourdons et cycle annuel de la ruche." },
+      { titel: "Pollinisation & ressources florales", body: "Plantes mellifères, nectar, pollen et biodiversité en ville." },
+      { titel: "Apiculture en sécurité", body: "Inspection de la ruche, vêtements de protection et prévention de l'essaimage." },
+    ],
+    en: [
+      { titel: "The bee colony", body: "Queen, workers, drones and the hive's annual cycle." },
+      { titel: "Pollination & forage", body: "Forage plants, nectar, pollen and urban biodiversity." },
+      { titel: "Safe beekeeping", body: "Hive inspection, protective clothing and swarm prevention." },
+    ],
   },
   minivarken: {
     nl: [
       { titel: "Voeding & wroeten", body: "Gebalanceerd rantsoen, geen keukenafval en wroetruimte." },
       { titel: "Intelligentie & gedrag", body: "Sociale groep, verrijking en signalen van verveling." },
       { titel: "Stal, modder & huid", body: "Modderbad tegen zonnebrand, droge ligplek en hygiëne." },
+    ],
+    fr: [
+      { titel: "Alimentation & fouissage", body: "Ration équilibrée, pas de déchets de cuisine et espace pour fouir." },
+      { titel: "Intelligence & comportement", body: "Groupe social, enrichissement et signes d'ennui." },
+      { titel: "Abri, boue & peau", body: "Bain de boue contre les coups de soleil, lieu de repos sec et hygiène." },
+    ],
+    en: [
+      { titel: "Feeding & rooting", body: "Balanced diet, no kitchen waste and space to root." },
+      { titel: "Intelligence & behaviour", body: "Social group, enrichment and signs of boredom." },
+      { titel: "Shelter, mud & skin", body: "Mud bath against sunburn, dry resting area and hygiene." },
     ],
   },
   schaap: {
@@ -212,12 +253,32 @@ const MODULES: ModulesBySlug = {
       { titel: "Kuddegedrag", body: "Vluchtdier, veilig drijven en rustig benaderen." },
       { titel: "Scheren, klauwen & gezondheid", body: "Vachtverzorging, klauwbekapping en parasietencontrole." },
     ],
+    fr: [
+      { titel: "Alimentation & pâturage", body: "Herbe, foin, minéraux et pâturage tournant." },
+      { titel: "Comportement du troupeau", body: "Animal de fuite, conduite sûre et approche calme." },
+      { titel: "Tonte, onglons & santé", body: "Entretien de la laine, parage des onglons et contrôle des parasites." },
+    ],
+    en: [
+      { titel: "Feeding & grazing", body: "Grass, hay, minerals and rotational grazing." },
+      { titel: "Herd behaviour", body: "Prey animal, safe herding and calm approach." },
+      { titel: "Shearing, hooves & health", body: "Coat care, hoof trimming and parasite checks." },
+    ],
   },
   paard: {
     nl: [
       { titel: "Voeding & wateropname", body: "Ruwvoer eerst, vaste tijden en risico op koliek." },
       { titel: "Gedrag & veiligheid", body: "Blinde hoeken, naderen langs de schouder en leiden." },
       { titel: "Stal, weide & hoeven", body: "Bewegingsruimte, gezelschap en dagelijkse hoefzorg." },
+    ],
+    fr: [
+      { titel: "Alimentation & hydratation", body: "Fourrage en priorité, horaires réguliers et risque de coliques." },
+      { titel: "Comportement & sécurité", body: "Angles morts, approche par l'épaule et conduite." },
+      { titel: "Écurie, pâture & sabots", body: "Espace pour bouger, compagnie et soins quotidiens des sabots." },
+    ],
+    en: [
+      { titel: "Feeding & water intake", body: "Roughage first, regular feeding times and colic risk." },
+      { titel: "Behaviour & safety", body: "Blind spots, approaching at the shoulder and leading." },
+      { titel: "Stable, pasture & hooves", body: "Room to move, companionship and daily hoof care." },
     ],
   },
 };
@@ -229,6 +290,7 @@ const MODULES: ModulesBySlug = {
  */
 export function academyModules(slug: string | undefined | null, lang: CertLang): CertModule[] {
   const key = (slug ?? "").trim().toLowerCase();
-  const entry = MODULES[key];
+  const aliases: Record<string, string> = { kippen: "kip", hond: "stadshond", bijen: "bij", varken: "minivarken", pony: "paard" };
+  const entry = MODULES[aliases[key] ?? key];
   return entry?.[lang] ?? GENERIC[lang];
 }

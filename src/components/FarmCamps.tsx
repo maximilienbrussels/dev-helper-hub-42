@@ -1,3 +1,4 @@
+import { deepTx } from "@/lib/i18n-extra";
 import { useMemo, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import {
@@ -20,7 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useT } from "@/lib/i18n";
+import { useT, formatT, localeFor } from "@/lib/i18n";
 import type { Lang } from "@/lib/i18n";
 import { sendContactMessage } from "@/lib/email.functions";
 import { useHoneypot } from "@/components/HoneypotField";
@@ -35,7 +36,6 @@ import {
   CAMP_SCHEDULE,
   FARM_CAMPS,
   campDateRange,
-  campLongDate,
   campPrice,
   type CampStatus,
   type FarmCamp,
@@ -200,8 +200,14 @@ const FILTERS: Filter[] = ["all", "lente", "zomer", "herfst", "winter"];
 
 /** Vakantiestages: seizoensfilter, kaarten, detailvenster en inschrijvingsflow. */
 export function FarmCamps() {
-  const { lang } = useT();
-  const c = COPY[lang];
+  const { lang, extra, tx } = useT();
+  const baseCopy = deepTx(tx, COPY[lang]);
+  const c = extra ? {
+    ...baseCopy,
+    audience: formatT(tx("{min} – {max} years • max. {count} children per group"), { min: CAMP_AGE_MIN, max: CAMP_AGE_MAX, count: CAMP_MAX_CHILDREN }),
+    child: (n: number) => n === 1 ? tx("1 child") : formatT(tx("{n} children"), { n }),
+    step: (n: number) => formatT(tx("Step {n} of 2"), { n }),
+  } : baseCopy;
   const [filter, setFilter] = useState<Filter>("all");
   const [detail, setDetail] = useState<FarmCamp | null>(null);
   const [booking, setBooking] = useState<FarmCamp | null>(null);
@@ -253,7 +259,7 @@ export function FarmCamps() {
               </div>
 
               <h3 className="font-serif mt-4 text-2xl text-[color:var(--ink-forest)]">
-                {camp.name[lang]}
+                {tx(camp.name[lang])}
               </h3>
               <p className="mt-1 text-sm font-medium tabular-nums text-foreground/90">
                 {campDateRange(camp)}
@@ -265,7 +271,7 @@ export function FarmCamps() {
               {camp.note && (
                 <p className="mt-3 inline-flex items-start gap-2 rounded-xl bg-background/70 p-3 text-xs text-foreground/90">
                   <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
-                  {camp.note[lang]}
+                  {tx(camp.note[lang])}
                 </p>
               )}
 
@@ -319,8 +325,14 @@ function DetailDialog({
   onClose: () => void;
   onBook: (camp: FarmCamp) => void;
 }) {
-  const { lang } = useT();
-  const c = COPY[lang];
+  const { lang, extra, tx } = useT();
+  const baseCopy = deepTx(tx, COPY[lang]);
+  const c = extra ? {
+    ...baseCopy,
+    audience: formatT(tx("{min} – {max} years • max. {count} children per group"), { min: CAMP_AGE_MIN, max: CAMP_AGE_MAX, count: CAMP_MAX_CHILDREN }),
+    child: (n: number) => n === 1 ? tx("1 child") : formatT(tx("{n} children"), { n }),
+    step: (n: number) => formatT(tx("Step {n} of 2"), { n }),
+  } : baseCopy;
 
   return (
     <Dialog open={!!camp} onOpenChange={(open) => !open && onClose()}>
@@ -329,16 +341,16 @@ function DetailDialog({
           <>
             <DialogHeader>
               <DialogTitle className="font-serif text-2xl text-[color:var(--ink-forest)]">
-                {camp.name[lang]}
+                {tx(camp.name[lang])}
               </DialogTitle>
               <DialogDescription>
-                {campLongDate(camp.start, lang)} → {campLongDate(camp.end, lang)} · {c.audience}
+                {new Date(`${camp.start}T12:00:00`).toLocaleDateString(localeFor(extra ?? lang), { day: "numeric", month: "long", year: "numeric" })} → {new Date(`${camp.end}T12:00:00`).toLocaleDateString(localeFor(extra ?? lang), { day: "numeric", month: "long", year: "numeric" })} · {c.audience}
               </DialogDescription>
             </DialogHeader>
 
             {camp.note && (
               <p className="rounded-xl bg-[color:var(--surface-page)]/70 p-4 text-sm text-foreground/90">
-                {camp.note[lang]}
+                {tx(camp.note[lang])}
               </p>
             )}
 
@@ -360,7 +372,7 @@ function DetailDialog({
                       <span className="block text-xs font-semibold tabular-nums text-muted-foreground">
                         {s.time}
                       </span>
-                      {s.what[lang]}
+                      {tx(s.what[lang])}
                     </p>
                   </li>
                 ))}
@@ -384,9 +396,9 @@ function DetailDialog({
                           className="h-4 w-4 text-[color:var(--color-terracotta)]"
                           aria-hidden
                         />
-                        {p.copy[lang].title}
+                        {tx(p.copy[lang].title)}
                       </p>
-                      <p className="mt-1.5 text-sm text-foreground/90">{p.copy[lang].body}</p>
+                      <p className="mt-1.5 text-sm text-foreground/90">{tx(p.copy[lang].body)}</p>
                     </li>
                   );
                 })}
@@ -397,8 +409,8 @@ function DetailDialog({
               <h4 className="text-[11px] uppercase tracking-[0.25em] text-[color:var(--color-terracotta)] font-medium">
                 {c.cancel}
               </h4>
-              <p className="mt-2 text-sm text-foreground/90">{CAMP_CANCELLATION[lang]}</p>
-              <p className="mt-2 text-sm text-foreground/90">{CAMP_MUTUELLE[lang]}</p>
+              <p className="mt-2 text-sm text-foreground/90">{tx(CAMP_CANCELLATION[lang])}</p>
+              <p className="mt-2 text-sm text-foreground/90">{tx(CAMP_MUTUELLE[lang])}</p>
             </section>
 
             <div className="mt-4 flex justify-end border-t border-border/60 pt-5">
@@ -419,8 +431,14 @@ function DetailDialog({
 }
 
 function BookingDialog({ camp, onClose }: { camp: FarmCamp | null; onClose: () => void }) {
-  const { lang } = useT();
-  const c = COPY[lang];
+  const { lang, extra, tx } = useT();
+  const baseCopy = deepTx(tx, COPY[lang]);
+  const c = extra ? {
+    ...baseCopy,
+    audience: formatT(tx("{min} – {max} years • max. {count} children per group"), { min: CAMP_AGE_MIN, max: CAMP_AGE_MAX, count: CAMP_MAX_CHILDREN }),
+    child: (n: number) => n === 1 ? tx("1 child") : formatT(tx("{n} children"), { n }),
+    step: (n: number) => formatT(tx("Step {n} of 2"), { n }),
+  } : baseCopy;
   const [step, setStep] = useState(1);
   const [rate, setRate] = useState<RateKind>("normal");
   const [children, setChildren] = useState<1 | 2 | 3>(1);
@@ -452,7 +470,7 @@ function BookingDialog({ camp, onClose }: { camp: FarmCamp | null; onClose: () =
     setBusy(true);
     setFailed(false);
     const bericht = [
-      `${camp.name[lang]} — ${campDateRange(camp)}`,
+      `${tx(camp.name[lang])} — ${campDateRange(camp)}`,
       `${c.rate}: ${c.rates[rate]}`,
       `${c.children}: ${children}`,
       `${c.total}: € ${total}`,
@@ -469,7 +487,7 @@ function BookingDialog({ camp, onClose }: { camp: FarmCamp | null; onClose: () =
         data: {
           website_hp: hp.value,
           inbox: "familie",
-          onderwerp: `Stage-inschrijving — ${camp.name[lang]}`,
+          onderwerp: `Stage-inschrijving — ${tx(camp.name[lang])}`,
           naam: parent,
           email,
           bericht,
@@ -491,7 +509,7 @@ function BookingDialog({ camp, onClose }: { camp: FarmCamp | null; onClose: () =
           <>
             <DialogHeader>
               <DialogTitle className="font-serif text-2xl text-[color:var(--ink-forest)]">
-                {camp.name[lang]}
+                {tx(camp.name[lang])}
               </DialogTitle>
               <DialogDescription>
                 {campDateRange(camp)} · {c.audience}
@@ -565,7 +583,7 @@ function BookingDialog({ camp, onClose }: { camp: FarmCamp | null; onClose: () =
                     </div>
 
                     <p className="rounded-xl bg-[color:var(--surface-page)]/70 p-4 text-sm text-foreground/90">
-                      {CAMP_MUTUELLE[lang]}
+                      {tx(CAMP_MUTUELLE[lang])}
                     </p>
                   </div>
                 )}

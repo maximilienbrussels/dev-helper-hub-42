@@ -1,3 +1,4 @@
+import { deepTx } from "@/lib/i18n-extra";
 import { PagePhotoBand } from "@/components/PagePhotoBand";
 import { NavHeader } from "@/components/NavHeader";
 import { PageContactForm } from "@/components/PageContactForm";
@@ -20,10 +21,11 @@ import { handleImageError } from "@/lib/image-fallback";
 const ORDER: ResourceCategory[] = ["pedagogie", "moestuin", "dieren", "vzw"];
 
 function Card({ r, open, lang }: { r: Resource; open: string; lang: "nl" | "fr" | "en" }) {
+  const { tx } = useT();
   const inner = (
     <>
-      <h3 className="font-serif text-lg text-[color:var(--ink-forest)]">{r.title[lang]}</h3>
-      <p className="mt-2 text-sm leading-relaxed text-foreground/90">{r.description[lang]}</p>
+      <h3 className="font-serif text-lg text-[color:var(--ink-forest)]">{tx(r.title[lang])}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-foreground/90">{tx(r.description[lang])}</p>
       <span className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[color:var(--color-terracotta)]">
         {r.external ? (
           <FileDown className="h-4 w-4" aria-hidden />
@@ -57,8 +59,8 @@ function Card({ r, open, lang }: { r: Resource; open: string; lang: "nl" | "fr" 
 }
 
 export function ResourcesPage() {
-  const { lang } = useT();
-  const c = RESOURCES_COPY[lang];
+  const { lang, tx } = useT();
+  const c = deepTx(tx, RESOURCES_COPY[lang]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -111,7 +113,8 @@ export function ResourcesPage() {
 }
 
 function AnimalSheets({ lang }: { lang: "nl" | "fr" | "en" }) {
-  const s = SHEETS_COPY[lang];
+  const { tx } = useT();
+  const s = deepTx(tx, SHEETS_COPY[lang]);
   return (
     <>
       <section className="mt-20">
@@ -132,7 +135,7 @@ function AnimalSheets({ lang }: { lang: "nl" | "fr" | "en" }) {
               <div className="aspect-[4/3] overflow-hidden bg-[color:var(--surface-page)]/60">
                 <img onError={handleImageError}
                   src={a.image}
-                  alt={a.title[lang]}
+                  alt={tx(a.title[lang])}
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-cover"
@@ -143,7 +146,7 @@ function AnimalSheets({ lang }: { lang: "nl" | "fr" | "en" }) {
                   {s.sheet}
                 </p>
                 <h3 className="font-serif mt-1 text-lg text-[color:var(--ink-forest)]">
-                  {a.title[lang]}
+                  {tx(a.title[lang])}
                 </h3>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {(["nl", "en"] as const).map((code) =>
@@ -171,7 +174,7 @@ function AnimalSheets({ lang }: { lang: "nl" | "fr" | "en" }) {
         <div className="aspect-[4/3] overflow-hidden bg-[color:var(--surface-page)]/60 md:aspect-auto">
           <img onError={handleImageError}
             src={FARM_MAP.image}
-            alt={FARM_MAP.title[lang]}
+            alt={tx(FARM_MAP.title[lang])}
             loading="lazy"
             decoding="async"
             className="h-full w-full object-cover"
@@ -180,9 +183,9 @@ function AnimalSheets({ lang }: { lang: "nl" | "fr" | "en" }) {
         <div className="p-6 md:p-8">
           <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">{s.print}</p>
           <h3 className="font-serif mt-2 text-2xl text-[color:var(--ink-forest)]">
-            {FARM_MAP.title[lang]}
+            {tx(FARM_MAP.title[lang])}
           </h3>
-          <p className="mt-3 text-muted-foreground">{FARM_MAP.description[lang]}</p>
+          <p className="mt-3 text-muted-foreground">{tx(FARM_MAP.description[lang])}</p>
           <a
             href={FARM_MAP.href}
             target="_blank"
@@ -190,7 +193,7 @@ function AnimalSheets({ lang }: { lang: "nl" | "fr" | "en" }) {
             className="mt-6 inline-flex min-h-[48px] items-center gap-2 rounded-full bg-[color:var(--surface-forest)] px-6 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:var(--color-cream)] transition-colors hover:bg-[color:var(--color-terracotta)]"
           >
             <Map className="h-4 w-4" aria-hidden />
-            {FARM_MAP.cta[lang]}
+            {tx(FARM_MAP.cta[lang])}
           </a>
         </div>
       </section>
