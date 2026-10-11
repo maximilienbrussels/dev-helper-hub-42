@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep supplemental public languages on the English URL carrier and release each locale only after complete static and Academy coverage, because partial translations must remain visibly unavailable.
