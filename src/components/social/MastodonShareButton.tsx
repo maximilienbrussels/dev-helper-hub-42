@@ -7,6 +7,7 @@ import {
   saveInstance,
 } from "@/lib/mastodon";
 import { useT, type Lang } from "@/lib/i18n";
+import { deepTx } from "@/lib/i18n-extra";
 
 const COPY: Record<Lang, { share: string; ask: string; placeholder: string; go: string }> = {
   nl: {
@@ -39,8 +40,8 @@ export function MastodonShareButton({
   url?: string;
   className?: string;
 }) {
-  const { lang } = useT();
-  const c = COPY[lang];
+  const { lang, tx } = useT();
+  const c = deepTx(tx, COPY[lang]);
   const [asking, setAsking] = useState(false);
   const [domain, setDomain] = useState("");
 

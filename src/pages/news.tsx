@@ -1,3 +1,4 @@
+import { deepTx, type ExtraLang } from "@/lib/i18n-extra";
 import { PagePhotoBand } from "@/components/PagePhotoBand";
 import { LocalLink } from "@/components/LocalLink";
 import { NavHeader } from "@/components/NavHeader";
@@ -26,7 +27,7 @@ const COPY: Record<Lang, { title: string; lede: string; back: string; read: stri
   },
 };
 
-function fmt(date: string, lang: Lang) {
+function fmt(date: string, lang: Lang | ExtraLang) {
   return new Date(date).toLocaleDateString(localeFor(lang), {
     day: "numeric",
     month: "long",
@@ -35,8 +36,8 @@ function fmt(date: string, lang: Lang) {
 }
 
 export function NewsPage() {
-  const { lang } = useT();
-  const c = COPY[lang];
+  const { lang, extra, tx } = useT();
+  const c = deepTx(tx, COPY[lang]);
   const items = [...NEWS].sort((a, b) => (a.date < b.date ? 1 : -1));
 
   return (
@@ -51,10 +52,10 @@ export function NewsPage() {
           {items.map((n) => (
             <article key={n.id} className="rounded-2xl border border-border bg-card p-5">
               <time dateTime={n.date} className="text-xs uppercase tracking-wide text-muted-foreground">
-                {fmt(n.date, lang)}
+                {fmt(n.date, extra ?? lang)}
               </time>
-              <h2 className="mt-1 font-serif text-2xl text-foreground">{n.title[lang]}</h2>
-              <p className="mt-2 text-sm text-muted-foreground">{n.lede[lang]}</p>
+              <h2 className="mt-1 font-serif text-2xl text-foreground">{tx(n.title[lang])}</h2>
+              <p className="mt-2 text-sm text-muted-foreground">{tx(n.lede[lang])}</p>
               <LocalLink
                 to={pathFor("news", lang, n.slug[lang])}
                 className="mt-3 inline-block text-sm font-semibold text-primary underline"
@@ -70,8 +71,8 @@ export function NewsPage() {
 }
 
 export function NewsDetailPage({ slug }: { slug: string }) {
-  const { lang } = useT();
-  const c = COPY[lang];
+  const { lang, extra, tx } = useT();
+  const c = deepTx(tx, COPY[lang]);
   const item = newsBySlug(lang, slug);
 
   if (!item) {
@@ -99,16 +100,16 @@ export function NewsDetailPage({ slug }: { slug: string }) {
           ← {c.back}
         </LocalLink>
         <time dateTime={item.date} className="mt-6 block text-xs uppercase tracking-wide text-muted-foreground">
-          {fmt(item.date, lang)}
+          {fmt(item.date, extra ?? lang)}
         </time>
-        <h1 className="mt-1 font-serif text-4xl text-foreground">{item.title[lang]}</h1>
-        <p className="mt-3 text-lg text-muted-foreground">{item.lede[lang]}</p>
+        <h1 className="mt-1 font-serif text-4xl text-foreground">{tx(item.title[lang])}</h1>
+        <p className="mt-3 text-lg text-muted-foreground">{tx(item.lede[lang])}</p>
         <div className="mt-6 space-y-4 leading-relaxed text-foreground/90">
           {item.body[lang].map((p) => (
-            <p key={p}>{p}</p>
+            <p key={p}>{tx(p)}</p>
           ))}
         </div>
-        <MastodonShareButton className="mt-8" text={item.title[lang]} />
+        <MastodonShareButton className="mt-8" text={tx(item.title[lang])} />
       </main>
     </div>
   );

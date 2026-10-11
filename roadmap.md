@@ -1,11 +1,17 @@
 # Roadmap
 
+- [ ] Publieke website in alle geplande talen voltooien; geen gedeeltelijke taal vrijgeven
+- [x] Eerste publieke inventaris en herhaalbare controle op Duitse woord- en zinsdekking (scripts/public-translations-audit.cjs; kandidaten zijn geen bewijs van volledigheid)
+- [x] Duitse FAQ, kampinformatie, kampinschrijving en agenda uitgebreid; nieuws, leermiddelen, transparantie en juridische pagina's aangesloten op aanvullende vertalingen
+- [x] Ontbrekende specifieke FR/EN-certificaatcompetenties voor geit, ezel, bij, minivarken, schaap en paard ingevuld
+- [ ] Duits: resterende statische inhoud, SEO, chat, delen, profiel, formulieren, juridische documenten en downloads volledig vertalen en zichtbaar nalopen
+- [ ] Academy: actuele kaarten, vragen, opties, feedback en eenheden controleren en vertalen — live inhoud niet bereikbaar zonder verbinding met de bestaande gegevens
 - [x] Thema-audit bezoekerspagina's licht/donker, desktop/gsm (perspagina wit vlak hersteld)
 - [ ] Thema-audit beheerdersportaal (wacht op aangemelde test als beheerder)
 - [x] Wereldbolletje naast NL / FR / EN op desktop en mobiel; onafgewerkte talen zichtbaar als "Binnenkort"
 - [x] Duits: basiswoordenboek (menu-teksten, voettekst, winkel, Academy-knoppen, certificaten, inloggen)
 - [x] Duits: hoofdmenu, profielmenu en voettekst
-- [ ] Duits: teksten die per pagina vastzitten (startpagina, bezoek, dieren en educatie klaar; overige pagina's en Academy-vragen nog te doen) — daarna Duits vrijgeven
+- [ ] Duits: volledige statische én Academy-dekking bewijzen — pas daarna vrijgeven
 - [ ] Arabisch, Turks: zelfde aanpak
 - [ ] Spaans, Italiaans, Portugees
 - [ ] Pools, Roemeens, Tamazight (laten nalezen door moedertaalspreker)

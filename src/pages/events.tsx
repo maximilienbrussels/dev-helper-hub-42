@@ -1,3 +1,4 @@
+import { deepTx, type ExtraLang } from "@/lib/i18n-extra";
 import { PagePhotoBand } from "@/components/PagePhotoBand";
 import { NavHeader } from "@/components/NavHeader";
 import { PageContactForm } from "@/components/PageContactForm";
@@ -124,7 +125,7 @@ function buildAgenda(): AgendaEntry[] {
   return [...camps, ...events].sort((a, b) => a.start.localeCompare(b.start));
 }
 
-function formatRange(entry: AgendaEntry, lang: Lang): string {
+function formatRange(entry: AgendaEntry, lang: Lang | ExtraLang): string {
   const locale = localeFor(lang);
   const opts: Intl.DateTimeFormatOptions = { day: "numeric", month: "long", year: "numeric" };
   const start = new Date(entry.start).toLocaleDateString(locale, opts);
@@ -134,8 +135,8 @@ function formatRange(entry: AgendaEntry, lang: Lang): string {
 }
 
 export function EventsPage() {
-  const { lang } = useT();
-  const c = COPY[lang];
+  const { lang, extra, tx } = useT();
+  const c = deepTx(tx, COPY[lang]);
   const today = new Date().toISOString().slice(0, 10);
   const agenda = buildAgenda().filter((e) => (e.end ?? e.start) >= today);
 
@@ -181,13 +182,13 @@ export function EventsPage() {
                     ) : null}
                   </div>
                   <h3 className="font-serif mt-3 text-xl text-[color:var(--ink-forest)]">
-                    {e.title[lang]}
+                    {tx(e.title[lang])}
                   </h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{formatRange(e, lang)}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{formatRange(e, extra ?? lang)}</p>
                   <p className="mt-3 text-sm leading-relaxed text-foreground/90">
-                    {e.detail[lang]}
+                    {tx(e.detail[lang])}
                   </p>
-                  <MastodonShareButton className="mt-4" text={`${e.title[lang]} — ${formatRange(e, lang)}`} />
+                  <MastodonShareButton className="mt-4" text={`${tx(e.title[lang])} — ${formatRange(e, extra ?? lang)}`} />
                   {e.splat ? (
                     <Link
                       to="/$lang/$"
@@ -222,7 +223,7 @@ export function EventsPage() {
                 <span className="w-20 shrink-0 tabular-nums font-medium text-[color:var(--ink-forest)]">
                   {s.time}
                 </span>
-                <span className="text-foreground/90">{s.what[lang]}</span>
+                <span className="text-foreground/90">{tx(s.what[lang])}</span>
               </li>
             ))}
           </ul>

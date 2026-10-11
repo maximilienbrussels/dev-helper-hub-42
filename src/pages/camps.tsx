@@ -1,3 +1,4 @@
+import { deepTx } from "@/lib/i18n-extra";
 import { PagePhotoBand } from "@/components/PagePhotoBand";
 import { PublicGallery } from "@/components/PublicGallery";
 import { FarmImage } from "@/components/FarmImage";
@@ -34,14 +35,14 @@ const COPY: Record<Lang, { eyebrow: string; title: string; lede: string; dayImag
 };
 
 export function CampsPage() {
-  const { t, lang } = useT();
-  const c = COPY[lang];
+  const { t, lang, tx } = useT();
+  const c = deepTx(tx, COPY[lang]);
   const { data: page } = useQuery({
     queryKey: ["page-content", "camps"],
     queryFn: () => fetchPageContent({ data: { key: "camps" } }),
   });
-  const heroTitle = page ? localized(page.hero.title, lang) : "";
-  const heroText = page ? localized(page.hero.text, lang) : "";
+  const heroTitle = page ? tx(localized(page.hero.title, lang)) : "";
+  const heroText = page ? tx(localized(page.hero.text, lang)) : "";
   return (
     <div className="min-h-screen bg-background text-foreground">
       <NavHeader />

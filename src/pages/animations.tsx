@@ -1,3 +1,4 @@
+import { deepTx } from "@/lib/i18n-extra";
 import { NavHeader } from "@/components/NavHeader";
 import { PublicGallery } from "@/components/PublicGallery";
 import { FarmImage } from "@/components/FarmImage";
@@ -7,7 +8,7 @@ import { localized } from "@/lib/page-content";
 
 import { PageContactForm } from "@/components/PageContactForm";
 import { LocalLink } from "@/components/LocalLink";
-import { useT } from "@/lib/i18n";
+import { useT, formatT } from "@/lib/i18n";
 import type { Lang } from "@/lib/i18n";
 import { MAX_GROUP_SIZE, PICNIC_OPTIONS, SCHOOL_ANIMATIONS, SECOND_ANIMATOR_PRICE, getAnimation } from "@/lib/school-animations";
 import type { AnimationSlug } from "@/lib/school-animations";
@@ -118,14 +119,14 @@ const PICNIC_LABELS: Record<Lang, Record<string, string>> = {
 };
 
 export function AnimationsIndexPage() {
-  const { t, lang } = useT();
-  const c = COPY[lang];
+  const { t, lang, tx } = useT();
+  const c = deepTx(tx, COPY[lang]);
   const { data: page } = useQuery({
     queryKey: ["page-content", "animations"],
     queryFn: () => fetchPageContent({ data: { key: "animations" } }),
   });
-  const heroTitle = page ? localized(page.hero.title, lang) : "";
-  const heroText = page ? localized(page.hero.text, lang) : "";
+  const heroTitle = page ? tx(localized(page.hero.title, lang)) : "";
+  const heroText = page ? tx(localized(page.hero.text, lang)) : "";
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -147,7 +148,7 @@ export function AnimationsIndexPage() {
 
         <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {SCHOOL_ANIMATIONS.map((a) => {
-            const copy = a.copy[lang];
+            const copy = deepTx(tx, a.copy[lang]);
             const block = page?.blocks.find((b) => b.id === `default-${a.slug}`);
             return (
               <LocalLink
@@ -182,15 +183,15 @@ export function AnimationsIndexPage() {
 
         <section className="mt-12 grid gap-6 md:grid-cols-2">
           <div className="rounded-3xl border border-border/60 p-6 text-sm text-foreground/90">
-            <p className="font-medium text-[color:var(--ink-forest)]">{c.maxGroup(MAX_GROUP_SIZE)}</p>
-            <p className="mt-2">{c.extra(SECOND_ANIMATOR_PRICE)}</p>
+            <p className="font-medium text-[color:var(--ink-forest)]">{formatT(tx("Max. {n} pupils per group"), { n: MAX_GROUP_SIZE })}</p>
+            <p className="mt-2">{formatT(tx("From 26 pupils on, a second facilitator joins (€{n})."), { n: SECOND_ANIMATOR_PRICE })}</p>
           </div>
           <div className="rounded-3xl border border-border/60 p-6">
             <h2 className="font-serif text-xl text-[color:var(--ink-forest)]">{c.picnic}</h2>
             <ul className="mt-3 space-y-1.5 text-sm text-foreground/90">
               {PICNIC_OPTIONS.map((p) => (
                 <li key={p.id} className="flex justify-between gap-3">
-                  <span>{PICNIC_LABELS[lang][p.id]}</span>
+                  <span>{tx(PICNIC_LABELS[lang][p.id])}</span>
                   <span className="text-muted-foreground">
                     {p.price === 0 ? c.picnicFree : `€ ${p.price}`}
                   </span>
@@ -207,10 +208,11 @@ export function AnimationsIndexPage() {
 }
 
 export function AnimationDetailPage({ slug }: { slug: AnimationSlug }) {
-  const { lang } = useT();
-  const c = COPY[lang];
-  const animation = getAnimation(slug)!;
-  const copy = animation.copy[lang];
+  const { lang, tx } = useT();
+  const c = deepTx(tx, COPY[lang]);
+  const animation = getAnimation(slug);
+  if (!animation) return null;
+  const copy = deepTx(tx, animation.copy[lang]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -289,7 +291,7 @@ export function AnimationDetailPage({ slug }: { slug: AnimationSlug }) {
         </section>
 
         <p className="mt-10 text-sm text-muted-foreground">
-          {c.maxGroup(MAX_GROUP_SIZE)} — {c.extra(SECOND_ANIMATOR_PRICE)}
+          {formatT(tx("Max. {n} pupils per group"), { n: MAX_GROUP_SIZE })} — {formatT(tx("From 26 pupils on, a second facilitator joins (€{n})."), { n: SECOND_ANIMATOR_PRICE })}
         </p>
 
         <div className="mt-16">
