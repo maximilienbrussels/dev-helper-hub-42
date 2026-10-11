@@ -12,7 +12,8 @@
 - [x] Duits: basiswoordenboek (menu-teksten, voettekst, winkel, Academy-knoppen, certificaten, inloggen)
 - [x] Duits: hoofdmenu, profielmenu en voettekst
 - [ ] Duits: volledige statische én Academy-dekking bewijzen — pas daarna vrijgeven
-- [ ] Arabisch, Turks: zelfde aanpak
+- [ ] Arabisch eerst, taal voor taal: volledige woordenboek- en paginavertaling, rechts-naar-linksweergave en afzonderlijke Academy/documentcontrole; niets vrijgeven vóór volledige dekking
+- [ ] Turks: zelfde aanpak
 - [ ] Spaans, Italiaans, Portugees
 - [ ] Pools, Roemeens, Tamazight (laten nalezen door moedertaalspreker)
 - [ ] Meertaligheid nalopen: overal ontbrekende vertalingen in NL/FR/EN
