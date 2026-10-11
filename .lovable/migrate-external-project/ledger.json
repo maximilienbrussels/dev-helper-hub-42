@@ -1,0 +1,10 @@
+[
+  {"capability": "application code", "source": "github.com/Routbe/dev-helper-hub", "outcome": "copied into project (same TanStack Start template revision)", "status": "verified", "next_action": null},
+  {"capability": "database schema (38 Neon migrations)", "source": "neon/migrations", "outcome": "migrations bundled; no live database connected", "status": "pending", "next_action": "provide DATABASE_URL or decide to move schema to Lovable Cloud"},
+  {"capability": "records/data export", "source": "none attached", "outcome": "no data imported", "status": "pending", "next_action": "export data from Neon if existing records must carry over"},
+  {"capability": "auth (own session auth, passkeys, Google OAuth)", "source": "src/lib auth + app_users tables", "outcome": "code imported; requires DATABASE_URL and AUTH_JWT_SECRET", "status": "pending", "next_action": "add secrets"},
+  {"capability": "Stripe payments", "source": "src/lib + api/public webhooks", "outcome": "code imported; keys missing", "status": "pending", "next_action": "add STRIPE_* secrets when verifying"},
+  {"capability": "S3 storage (Scaleway)", "source": "src/lib storage", "outcome": "code imported; keys missing", "status": "pending", "next_action": "add S3_* secrets when verifying"},
+  {"capability": "Brevo/SMTP e-mail", "source": "src/lib mail", "outcome": "code imported; keys missing", "status": "pending", "next_action": "add BREVO_API_KEY or SMTP_* secrets when verifying"},
+  {"capability": "three deployment modes (public/admin/field via VITE_APP_MODE)", "source": "src/lib/app-mode.ts", "outcome": "code imported; Lovable preview runs default mode detection", "status": "verified", "next_action": "multi-domain deploy not applicable on Lovable; use ?mode= override"}
+]
