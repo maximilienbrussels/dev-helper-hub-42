@@ -38,7 +38,9 @@ export async function requestOrigin(): Promise<string> {
         hostname.endsWith(".maximilien.app") ||
         hostname === "localhost" ||
         hostname === "127.0.0.1" ||
-        hostname.endsWith(".lovable.app");
+        hostname.endsWith(".lovable.app") ||
+        hostname.endsWith(".vercel.app") ||
+        hostname === "maximilien.dlp.li";
       return trusted ? candidate.origin.replace(/\/+$/, "") : null;
     } catch {
       return null;
