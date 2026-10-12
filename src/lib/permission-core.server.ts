@@ -111,6 +111,12 @@ async function isEmailVerified(userId: string, email: string | null): Promise<bo
 
 /** Volledig beeld van de toegang van deze sessie (voor diagnose én controle). */
 export async function resolveAccessRaw(context: PermissionContext): Promise<AccessSnapshot> {
+  try {
+    const { ensurePortalSchema } = await import("@/lib/portal-schema.server");
+    await ensurePortalSchema();
+  } catch {
+    /* controle gaat verder; ontbrekende tabellen geven gewoon geen rechten */
+  }
   const email = await resolveUserEmail(context);
   const emailVerified = await isEmailVerified(context.userId, email);
   const isFixedOwner = emailVerified && isSuperAdminEmail(email);
