@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Adminlogin: eerdere herstelmaatregelen controleren, resterende aanmeldblokkades herstellen en aangemelde toegang testen — bestaande Vercel-gegevens niet beschikbaar in deze preview
+- [ ] Arabisch: bestaande woordenboeken aansluiten, resterende publieke zinnen aanvullen en preview/RTL controleren
 - [ ] Publieke website in alle geplande talen voltooien; geen gedeeltelijke taal vrijgeven
 - [x] Eerste publieke inventaris en herhaalbare controle op Duitse woord- en zinsdekking (scripts/public-translations-audit.cjs; kandidaten zijn geen bewijs van volledigheid)
 - [x] Duitse FAQ, kampinformatie, kampinschrijving en agenda uitgebreid; nieuws, leermiddelen, transparantie en juridische pagina's aangesloten op aanvullende vertalingen

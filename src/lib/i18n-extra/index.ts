@@ -8,6 +8,9 @@ import de from "./de";
 import dePublic from "./de-public";
 import deResources from "./de-resources";
 import deCamps from "./de-camps";
+import ar from "./ar";
+import arPublic from "./ar-public";
+import arCamps from "./ar-camps";
 
 export type ExtraLang = "de" | "ar" | "tr" | "es" | "it" | "pt" | "pl" | "ro" | "zgh";
 
@@ -36,7 +39,7 @@ export const EXTRA_LANGS: ExtraLangMeta[] = [
   { code: "zgh", native: "ⵜⴰⵎⴰⵣⵉⵖⵜ · Tamaziɣt", english: "Tamazight (Berber)", short: "ⵣ", htmlLang: "zgh", locale: "fr-MA", dir: "ltr", ready: false },
 ];
 
-export const EXTRA_DICTS: Partial<Record<ExtraLang, Record<string, string>>> = { de };
+export const EXTRA_DICTS: Partial<Record<ExtraLang, Record<string, string>>> = { de, ar };
 
 export function isExtraLang(v: string | null | undefined): v is ExtraLang {
   return EXTRA_LANGS.some((x) => x.code === v);
@@ -54,7 +57,10 @@ import dePhrases from "./de-phrases";
  * vertaald op basis van hun Engelse tekst. Ontbreekt een vertaling, dan blijft
  * het Engels staan.
  */
-export const EXTRA_PHRASES: Partial<Record<ExtraLang, Record<string, string>>> = { de: { ...dePhrases, ...dePublic, ...deResources, ...deCamps } };
+export const EXTRA_PHRASES: Partial<Record<ExtraLang, Record<string, string>>> = {
+  de: { ...dePhrases, ...dePublic, ...deResources, ...deCamps },
+  ar: { ...arPublic, ...arCamps },
+};
 
 export function translatePhrase(extra: ExtraLang | null | undefined, en: string): string {
   if (!extra) return en;
